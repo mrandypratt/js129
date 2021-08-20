@@ -1,5 +1,18 @@
-let mySheet = {
-  numbers: [1, 2, 3, 4]
+/*
+
+
+
+*/
+
+function example () {
+  return {
+    a: "A",
+    crazyMethod() {
+      console.log("yayaya");
+    }
+  };
 }
 
-console.log(Object.getOwnPropertyNames(mySheet.numbers));
+let example1 = example();
+
+console.log(Object.keys(example1));

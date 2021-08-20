@@ -70,13 +70,14 @@ jaguar.displayFuelLevel(); // => 0.4
 - **Member Access Notation**: "Dot Notation" - Must be a string with no spaces or dashes
 - **Computed Member Access Notation**: "Bracked Notation" - Will compute value and convert to string
 ### Determining Property Existence:
-- `in`
-- `hasOwnProperty`
-- `getOwnPropertyNames`
-- `keys`
-- 
+- `in`: Returns true if property exists in the object's prototypal chain
+- `hasOwnProperty`: Returns Boolean indicating if object owns property, whether or not enumerable
+- `Object.getOwnPropertyNames()`: Returns Array of all properties, including non-enumerable (length, name). Good for JS inner workings, not for iterating over values
+- `Object.keys()`: Returns array of only enumerable properties
+
 ```javascript
-Object.keys(myObject)                  //  [ '7', 'false', '1,2,3', 'a-key' ]
+let keys = Object.keys(myObject)       //  [ '7', 'false', '1,2,3', 'a-key' ]
+Object.getOwnPropertyNames(keys)       //  [ 'length', '7', 'false', '1,2,3', 'a-key' ]
 
 "false" in myObject                    // true
 "true" in myObject                     // false
