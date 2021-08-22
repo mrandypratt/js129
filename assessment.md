@@ -70,10 +70,10 @@ jaguar.displayFuelLevel(); // => 0.4
 - **Member Access Notation**: "Dot Notation" - Must be a string with no spaces or dashes
 - **Computed Member Access Notation**: "Bracked Notation" - Will compute value and convert to string
 ### Determining Property Existence:
-- `in`: Returns true if property exists in the object's prototypal chain
+- `in`: Returns true if property exists in the object's prototypal chain, whether or not enumerable
 - `hasOwnProperty`: Returns Boolean indicating if object owns property, whether or not enumerable
-- `Object.getOwnPropertyNames()`: Returns Array of all properties, including non-enumerable (length, name). Good for JS inner workings, not for iterating over values
-- `Object.keys()`: Returns array of only enumerable properties
+- `Object.getOwnPropertyNames()`: Returns Array of all owned properties, including non-enumerable (length, name). Good for JS inner workings, not for iterating over values
+- `Object.keys()`: Returns array of only owned, enumerable properties
 
 ```javascript
 let keys = Object.keys(myObject)       //  [ '7', 'false', '1,2,3', 'a-key' ]
@@ -84,8 +84,85 @@ Object.getOwnPropertyNames(keys)       //  [ 'length', '7', 'false', '1,2,3', 'a
 
 myObject.hasOwnProperty("7")           // true
 myObject.hasOwnProperty("8")           // false
- 
 ```
+
+## Prototypal Inheritance
+prototype
+: An object from which another obect inherits properties/methods
+
+All objects are created with a `[[Prototype]]` value, which can point to another object or `null`
+- All objects created in the global scope default to `Object.prototype` as their `[[Prototype]]` value
+- `Object.prototype` has a `[[Prototype]]` value set to `null`
+- `[[Prototype]]` values can be set or altered using methods or changing property values
+- `Object.getPrototypeOf(obj)` or `obj.__proto__` can be used to determine `[[Prototype]]` value of a given `obj` 
+
+### Types of Prototypal Inheritance:
+- `Object.create()`: Creates new object with `[[Prototype]]` explicitly set to a particular object
+- `Object.setPrototypeOf()`: Reassigns `[[Prototype]]` property to a new object
+
+### Property Selection
+Unlike `Object.assign` which overwrites properties with same names, prototypal chaining allows each object to carry a unique value.
+```javascript
+// Two objects are chained together with different "prop" values
+
+let proto = { prop: "Prototype Value" };
+let instance = { prop: "Instance Value" };
+
+Object.setPrototypeOf(instance, proto);
+
+// "prop" holds its value for each object independently.
+
+console.log(proto);  // => { prop: 'Prototype Value' }
+console.log(instance);  // => { prop: 'Instance Value' }
+
+// With no owned "prop" value, the chain goes to the immediate next object up in the chain
+
+let newInstance = Object.create(instance);
+
+console.log(newInstance);  // => {}
+console.log(newInstance.prop);  // => Instance Value
+
+// When a new "prop" value is created on an instance, it can only modify or create an owned property
+
+newInstance.prop = "Something Absolutely Different";
+
+console.log(proto);  // => { prop: 'Prototype Value' }
+console.log(instance);  // => { prop: 'First Instance Value' }
+console.log(newInstance);  // => { prop: 'Something Absolutely Different' }
+
+### 
+```
+
+## Functions
+Creating Functions:
+### Function Declaration
+Using `function` as first word to declare 
+Benefits:
+- Hoisting: can invoke a function before it is defined
+- Named: able to refer to the function by name
+### Function Expressions:
+Non-Function Declarations
+Examples:
+- Variable Assignment (`let exp = function() {}`)
+- Pass to another Function (`[1, 2, 2].forEach(function(elem) {})`)
+- Return to caller (`function passBack() { return function() {} }`)
+- Arrow Functions (`(a) => a * 2`)
+Function Expressions Can be anynomous (`let exp = function() {}`) or named (`let exp = function funName() {}`)
+### First-Class Functions:
+Ability to assign functions to variables and properties, pass them to functions, or return from other functions
+All JavaScript funcitons are First-Class
+```javascript
+function say() { console.log("Say") }
+let speak = say; // First-Class: function passed as value
+speak(); // Invocation: function expression invoked using Function Invocation Syntax
+```
+### Higher-Order Functions
+Higher-Order Functions
+: either accepts a function as argument or returns a function
+
+## `global`
+
+
 ## Constructors
 ## Prototypes
 ## OLOO
@@ -94,17 +171,12 @@ myObject.hasOwnProperty("8")           // false
 ## Properties
 ## Instance Methods
 ## Static Methods
-## Prototypal Inheritance
 ## Pseudo-Classical Inheritance
-
 ## Polymorphism
 ## Single Inheritance
 ## Multiple Inheritance
 ## Mix-ins
 ## Method Invocation
-## Function Invocation
-## Higher-Order Functions
-## `global`
 ## Method/Property Lookup Chain
 ## Function Execution Context
 ## `this`
