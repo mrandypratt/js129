@@ -192,7 +192,8 @@ JS uses EC to determine the value of `this`
 EC is determined by the Invocation of a method, not definition
 Binding `this` is another way to refer to EC
 ### Implicit Execution Context
-
+- Global Scope: using `this` in the global scope or within a function that is not otherwise within another object which provides execution context, the global object will be used as context
+- Method Execution Context: the object used to access the method is used as execution context
 ### Explicit Execution Context
 
 
