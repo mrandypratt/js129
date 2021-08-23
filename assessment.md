@@ -161,7 +161,42 @@ Higher-Order Functions
 : either accepts a function as argument or returns a function
 
 ## `global`
+The default implicit execution context for every JavaScript function.
+This object is created every time JavaScript runs.
+Any variable assigned without declaration becomes a property of `global` (which can have unforseen consequences sometimes)
+All properties in the global scope are here, with notable examples below.
 
+### Properties/Methods of `global`
+Primitive Types
+: Boolean, BigInt, Number, String, and Symbol, and undefined (Not Null)
+
+Built In Objects
+: Array, Object, Function, Date, Math, RegExp, JSON
+ 
+Values
+: Infinity, NaN, 
+
+Methods
+: ParseInt, ParseFloat
+
+Error Types
+: Error, EvalError, RangeError, ReferenceError, SyntaxError, and TypeError 
+
+Other
+: console, global, Map
+
+## Function Execution Context
+Execution Context
+: the **environment** in which a function executes
+JS uses EC to determine the value of `this`
+EC is determined by the Invocation of a method, not definition
+Binding `this` is another way to refer to EC
+### Implicit Execution Context
+
+### Explicit Execution Context
+
+
+## `this`
 
 ## Constructors
 ## Prototypes
@@ -178,10 +213,6 @@ Higher-Order Functions
 ## Mix-ins
 ## Method Invocation
 ## Method/Property Lookup Chain
-## Function Execution Context
-## `this`
-## Implicit Execution Context
-## Explicit Execution Context
 ## Context Loss
 
 
