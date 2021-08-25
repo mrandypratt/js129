@@ -208,6 +208,33 @@ console.log(Object.getPrototypeOf(instance)) // => { pro: 'Prototype Property' }
 console.log(Object.getPrototypeOf(instance) === proto) // => true
 ```
 
+## `Function.prototype.call()`
+Explicitly sets the execution context of a function to the first argument passed and passes all remaining arguments as arguments in the function being called.
+```javascript
+// Usage
+function myFunct() {}
+myFunct.call()
+myFunct.call(thisArg)
+myFunct.call(thisArg, arg1)
+myFunct.call(thisArg, arg1, arg2)
+myFunct.call(thisArg, arg1, ... , argN)
+```
+If `this` is in a function, you can pass the current value of `this` in with the new function invocation or pass another existing object
+```javascript
+function MakeHeight(height) {
+  this.height = height;
+}
+
+function Person(weight) {
+  this.weight = weight;
+  MakeHeight.call(this, "6ft");
+}
+
+let andy = new Person(185);
+
+console.log(andy); // => Person { weight: 185, height: '6ft' }
+```
+
 ## `typeof`
 
 

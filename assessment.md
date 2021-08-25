@@ -195,6 +195,27 @@ Binding `this` is another way to refer to EC
 - Global Scope: using `this` in the global scope or within a function that is not otherwise within another object which provides execution context, the global object will be used as context
 - Method Execution Context: the object used to access the method is used as execution context
 ### Explicit Execution Context
+- `Function.prototype.call()` method: Used in place of invocation syntax when calling a function/method to pass in the desired execution context (value of `this`) along with any arguments for the function
+- `Function.prototype.apply()` method: Works as `call` except using an array for function arguments (first arg is still `this`)
+- `Function.prototype.bind()`: Returns a new function with a **permanent** `this` value for every future function call (original function is unaltered)
+Examples:
+```javascript
+// call with individual argements:
+someObject.someMethod.call(context, arg1, ..., argN)
+
+// apply with array
+let args = [arg1, arg2, arg3];
+someObject.someMethod.apply(context, args)
+
+// call with spread operator
+someObject.someMethod.call(context, ...args);
+
+// bind
+let boundMethod = someObject.unboundMethod.bind(context, ...args))
+```
+
+## Context Loss
+- Method Copied into variable
 
 
 ## `this`
@@ -214,7 +235,6 @@ Binding `this` is another way to refer to EC
 ## Mix-ins
 ## Method Invocation
 ## Method/Property Lookup Chain
-## Context Loss
 
 
 
