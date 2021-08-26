@@ -1,45 +1,31 @@
-// Create Parent constructor
-function Rectangle(length, width) {
-  this.length = length;
-  this.width = width;
+// Create Classes for the two overlapping methods
+class FlyingBird {
+  fly() { console.log("I can Fly!") }
 }
 
-Rectangle.prototype.getArea = function() {
-  return this.length * this.width;
-};
-
-Rectangle.prototype.toString = function() {
-  return `[Rectangle ${this.length} x ${this.width}]`;
-};
-
-// Create child constructor
-function Square(size) {
-  Rectangle.call(this, size, size);
-  // Alternatively, just set length and width property equal to size
+class SwimmingBird {
+  swim() { console.log("I can Swim!") }
 }
 
-Square.prototype = Object.create(Rectangle.prototype); // Shares Instance methods
-// Should set Constructor here, per below
+// Create class to extend on class and assign the other class(es) to the prototype chain
+class BothBird extends SwimmingBird {
+  this.fly = FlyingBird.fly;
+}
 
-Square.prototype.toString = function() {
-  return `[Square ${this.length} x ${this.width}]`;
-};
+class Parrot extends FlyingBird {}
 
-let rect = new Rectangle(10, 5);
-console.log(rect.getArea());     // => 50
-console.log(rect.toString());    // => "[Rectangle 10 x 5]"
+class Penguin extends SwimmingBird {}
 
-let sqr = new Square(5);
-console.log(sqr.getArea());     // => 25
-console.log(sqr.toString());    // => "[Square 5 x 5]"
+class Duck extends BothBird {}
 
-// Constructor is not set automatically
-console.log(rect.constructor); // => [Function: Rectangle]
-console.log(sqr.constructor); // => [Function: Rectangle]
+let flyer = new Parrot();
+let swimmer = new Penguin();
+let bother = new Duck();
 
-Square.prototype.constructor = Square;
-
-console.log(rect.constructor); // => [Function: Rectangle]
-console.log(sqr.constructor); // => [Function: Square]
-
-console.log(sqr.constructor === Square.prototype.constructor)
+flyer.fly()
+swimmer.swim()
+bother.swim()
+console.log(bother)
+console.log(Duck)
+console.log("swim" in bother)
+console.log("fly" in bother)

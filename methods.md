@@ -1,5 +1,6 @@
 ## `Object.assign()`
-Static Object method which applies the properties and methods of one Object to another
+Static Object method which copies the properties and methods of one Object to another
+NOTE: Does not work with Classes, must be prototype objects or other "object" types
 ```javascript
 // Object.assign() takes a target and applies a variable number of sources to it.
 // EX: Object.assign(target, ...sources) // Returns Modified target

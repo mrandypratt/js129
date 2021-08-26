@@ -485,19 +485,72 @@ scottTheTerrier.dogMethod(); // => I'm Scott and I'm an Dog!
 scottTheTerrier.animalMethod(); // => I'm Scott and I'm an animal!
 ```
 
+## Pseudo-Classical Inheritance vs Prototypal Inheritance
+### Both
+- Forms of Inheritance
+- Work under the hood using `[[Prototype]]`
+### Pseudo-Classical Inheritance
+- AKA Constructor/Prototype Pattern
+- Use of Constructor function and `prototype` object to provide inheritance
+- *Like* classes, but without actually using a "class"
+- Using `class` and `extends` is also a form of Pesudo-Classical inheritance
+### Prototypal Inheritance
+- AKA Prototypal Delegation or Object Inheritance
+- Creating Prototype Objects and usieng `Object.create()` to set the `[[Protoype]]` property to inherit functions
+
 ## Mixins
+Single Inheritance
+: JavaScript Objects can only have *one prototype object*
+Multiple Inhericance
+: Inheriting from multiple objects. **Multiple Inheritance is not Supported by JavaScript**
+Mixin
+: A pattern that ads methods and properties from one object to another
+- Mixins do not use prototypal delegation, due to JS's Single Inheritance nature
+- Mixins work by copying properties/methods using `Object.assign()` or another comparable method.
+- First, Create an object with properties to mix
+- Then, Create a class in which to mix the object
+- Last assign the mix object's properties to the Class's `prototype` property (not directly on the class)
+- All instances of the class beneath will inherit that property
+Using Mixins on the `prototype` property may look messy when working with classes/constructor inheritance, but it preserves the memory benefits of inheritance while working around the single inheritance problem.
+
 ## Polymorphism
+Polymorphism
+: When two+ objects can call the same method name ith no errors
+Implementation Options:
+- Inheritance: Same method names will override super-type methods
+- **Duck Typing**: When objects of unrelated types both respond to the same name
+Duck Typing is focused on behavior over type per below example:
+```javascript
+class Chef {
+  prepare(wedding) {
+    this.prepareFood(wedding.guests);
+  }
 
-## Methods
-## Properties
+  prepareFood(guests) {
+    // implementation
+  }
+}
 
-## Pseudo-Classical Inheritance
+class Decorator {
+  prepare(wedding) {
+    this.decoratePlace(wedding.flowers);
+  }
 
-## Single Inheritance
-## Multiple Inheritance
+  decoratePlace(flowers) {
+    // implementation
+  }
+}
 
-## Method Invocation
-## Method/Property Lookup Chain
+class Wedding {
+  constructor(guests, flowers, songs) {
+    this.guests = guests;
+    this.flowers = flowers;
+  }
 
-
-
+  prepare(preparers) {
+    preparers.forEach(preparer => {
+      preparer.prepare(this);
+    });
+  }
+}
+```
