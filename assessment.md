@@ -215,24 +215,287 @@ let boundMethod = someObject.unboundMethod.bind(context, ...args))
 ```
 
 ## Context Loss
-- Method Copied into variable
+###Method Copied into a global variable or another object property
+```javascript
+let john = {
+  firstName: 'John',
+  lastName: 'Doe',
+  greetings() {
+    console.log('hello, ' + this.firstName + ' ' + this.lastName);
+  },
+};
 
+// context is john
+john.greetings(); // => hello, John Doe
 
-## `this`
+// Strips Context; context is now the global object
+let foo = john.greetings;
+foo(); // => hello, undefined undefined
+
+let greg = {
+  firstName: "Greg",
+  lastName: "WhatsHisFace",
+};
+
+// Context changed to greg
+greg.foo = john.greetings; 
+greg.foo(); // => hello, Greg WhatsHisFace
+```
+### Inner Function not using Surrounding context
+In this example, the function the function invocation inside the object doesn't specify context using method invocation or explicit calls, therefore uses the global object
+```javascript
+let obj = {
+  a: 'hello',
+  b: 'world',
+  foo: function() {
+    console.log(this); // #1 => obj
+    function bar() {
+      console.log(this); // #3 => global (no props a & b)
+      console.log(this.a + ' ' + this.b); // #4 => undefined undefined
+    }
+    console.log(this); // #2 => obj
+    bar(); // Invocation of bar with no context provided **cause for error**
+  },
+};
+
+obj.foo(); // obj passed in as context
+```
+Solutions to this problem:
+```javascript
+// Use of variable to preserve context
+let obj = {
+  a: 'hello',
+  b: 'world',
+  foo: function() {
+    let self = this;  // Preserves context before no-context invocation of bar
+
+    function bar() {
+      console.log(self.a + ' ' + self.b); // context is passed into the inner function scope using variable
+    }
+
+    bar();
+  },
+};
+
+obj.foo(); // => hello world
+
+// Use of call/apply to provide explicit context
+let obj = {
+  a: 'hello',
+  b: 'world',
+  foo: function() {
+    function bar() {
+      console.log(self.a + ' ' + self.b);
+    }
+
+    bar.call(this); // sets execution context explicitly
+  },
+};
+
+obj.foo(); // => hello world
+
+// Use bind to permanently set explicit context
+let obj = {
+  a: 'hello',
+  b: 'world',
+  foo: function() {
+    let bar = function() {
+      console.log(this.a + ' ' + this.b);
+    }.bind(this); // Function expression returns a function bound to the current context of this
+
+    bar(); // works multiple times
+
+    // some more code
+    bar(); // works multiple times
+
+    // still more code
+  }
+};
+
+obj.foo();
+// => hello world
+// => hello world
+
+// Use an Arrow Function
+let obj = {
+  a: 'hello',
+  b: 'world',
+  foo: function() {
+    // Arrow Function always inherits context from surrounding scope
+    let bar = () => {
+      console.log(this.a + ' ' + this.b);
+    }
+
+    // some code
+    bar();
+
+    // some more code
+    bar();
+
+    // still more code
+  }
+};
+
+obj.foo(); // => hello world
+
+```
+Arrow Functions:
+Exectuion context is the same as its lexical context used *inside a method*
+Execution context is always global variable when used *as a method*
+
+### Function as Argument
+Making a function call inside a method requres passing in context if the callback function uses `this`
+Fixes are similar as above: variable, `bind`, `call`/`apply`, `bind`, Arrow, or `thisArg` argument (included in Array.prototype methods)
 
 ## Constructors
+Constructors
+: A function (capitalized by convention) which, instead of returning an object, accepts an object passed in as context (using the `new` keyword) and adds properties and methods to the object using the `this` keyword
+### The `new` keyword
+JS does the following 6 things when a function is invoked with `new`:
+1. Creates a new object.
+2. Sets `[[Prototype]]` of new object to point to the same object as the constructor's `prototype` property.
+3. Sets `constructor` property of new object to point to the constructor function.
+3. Sets `this`inside the function to refer to new object.
+4. Invokes the function.
+5. Returns the new object implicitly (no `return` expression necessary).
+
+Explicit Return Values only override the new object if the return value itself is an object.
+`instanceof` operator will confirm if object made by a Constructor function (using `constructor` property is more useful)
+
 ## Prototypes
-## OLOO
+All objects have a hidden `[[Prototype]]` property which can be accessed, but does not show even when using `hasOwnProperty`.
+When JavaScript is asked to reference a property on an object, it follows the **Prototypal Chain**
+```javascript
+function Dog() {}
+Dog.prototype = {
+  dogMethod() {
+    console.log(`I'm ${this.name} and I'm an Dog!`);
+  }
+};
+
+function Terrier() {
+}
+Terrier.prototype = {
+  terrierMethod() {
+    console.log(`I'm ${this.name}. Yip, yip!`);
+  }
+}
+
+let scottTheTerrier = { name: "Scott" };
+Object.setPrototypeOf(scottTheTerrier, Terrier.prototype); // Set object to Constructor's Prototype to inherit
+scottTheTerrier.terrierMethod(); // => I'm Scott. Yip, yip!
+
+Object.setPrototypeOf(Terrier.prototype, Dog.prototype); // Set Constructor's prototype to the next constructor's prototype to extend the chain
+scottTheTerrier.dogMethod(); // => I'm Scott and I'm an Dog!
+```
+The Prototypal Chain for the above code is: 
+1. `scottTheTerrier` =>
+3. `Terrier.prototype.__proto__` === `Dog.prototype` =>
+4. `Dog.prototype.__proto__` === `Object.prototype` =>
+5. `Object.prototype.__proto__` === `null`
+Methods on objects lower in the prototypal chain take precedence over others further out (similar to variable shadowing)
+All object-like types (Arrays, Objects, Functions) all work using this chaining
+
+### Instance Methods
+Methods stored on the `prototype` property of a constructor/class.
+These methods can be accessed by any instance directly due to the nature of the prototypal chain (unless the same property name is used lower on the chain)
+
+### Static Methods
+Accessed directly on the constructor function.
+```javascript
+function Constructor() {}
+Constructor.staticMethod = function() {}
+Constructor.prototype.instanceMethod = {
+  function() {}
+}
+```
+
 ## ES6 Classes
+Syntactic Sugar allowing use of constructor & prototype functionality for creating object types:
+```javascript
+class Animal {
+  constructor(name) {
+    this.name = name;
+  }
+  animalMethod() {
+    console.log(`I'm ${this.name} and I'm an animal!`);
+  }
+};
+
+class Dog extends Animal {
+  constructor(name) {
+    super(name);
+  }
+  dogMethod() {
+    console.log(`I'm ${this.name} and I'm an Dog!`);
+  }
+}
+
+class Terrier extends Dog {
+  constructor(name) {
+    super(name);
+  }
+  terrierMethod() {
+    console.log(`I'm ${this.name}. Yip, yip!`);
+  }
+}
+
+// Use of prototypes still allows classes to work
+let scottTheTerrier = { name: "Scott" };
+Object.setPrototypeOf(scottTheTerrier, Terrier.prototype); // Set object to Constructor's Prototype to inherit
+scottTheTerrier.terrierMethod(); // => I'm Scott. Yip, yip!
+scottTheTerrier.dogMethod(); // => I'm Scott and I'm an Dog!
+scottTheTerrier.animalMethod(); // => I'm Scott and I'm an animal!
+console.log(Animal.prototype.__proto__ === Object.prototype); // => true
+console.log(Object.prototype.__proto__); // ==> null
+
+// More easily, you can use the new keyword
+let reginald = new Terrier('Reginald');
+reginald.terrierMethod(); // => I'm Scott. Yip, yip!
+reginald.dogMethod(); // => I'm Scott and I'm an Dog!
+reginald.animalMethod(); // => I'm Scott and I'm an animal!
+```
+
+## OLOO
+```javascript
+let animalPrototype = {
+  init(name) {
+    this.name = name;
+    return this;
+  },
+  animalMethod: function() {
+    console.log(`I'm ${this.name} and I'm an animal!`);
+  }
+};
+
+let dogPrototype = Object.create(animalPrototype);
+dogPrototype.dogMethod = function() {
+  console.log(`I'm ${this.name} and I'm an Dog!`);
+};
+
+let terrierPrototype = Object.create(dogPrototype);
+terrierPrototype.terrierMethod = function() {
+  console.log(`I'm ${this.name}. Yip, yip!`);
+};
+
+// Use of prototypes still allows classes to work
+let scottTheTerrier = Object.create(terrierPrototype).init("Scott");
+scottTheTerrier.terrierMethod(); // => I'm Scott. Yip, yip!
+scottTheTerrier.dogMethod(); // => I'm Scott and I'm an Dog!
+scottTheTerrier.animalMethod(); // => I'm Scott and I'm an animal!
+```
+
+## Mixins
+## Polymorphism
+
 ## Methods
 ## Properties
-## Instance Methods
-## Static Methods
+
 ## Pseudo-Classical Inheritance
-## Polymorphism
+
 ## Single Inheritance
 ## Multiple Inheritance
-## Mix-ins
+
 ## Method Invocation
 ## Method/Property Lookup Chain
 

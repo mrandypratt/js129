@@ -14,8 +14,8 @@ Rectangle.prototype.toString = function() {
 
 // Create child constructor
 function Square(size) {
-  Rectangle.call(this, size, size);
-  // Alternatively, just set length and width property equal to size
+  this.length = size;
+  this.width = size;
 }
 
 Square.prototype = Object.create(Rectangle.prototype); // Shares Instance methods
