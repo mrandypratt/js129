@@ -4,24 +4,23 @@
 Object-Oriented Programming
 : Organizing programs in terms of objects which have *state* and *behavior* (aka properties and methods) and interact with one another.
 ### Pros:
-- Higher abstraction level
-- Easier to create, understand, and update programs
+- Higher level of abstraction
+- Easier to create, comprehend, and update programs
 - Less Dependencies
 ### Cons:
-- Larger
-- Less efficient
-- 
+- Generally larger programs
+- Less memory-efficient
 ## Encapsulation
-encapsulation
-: Bundling State and behavior to form an object.
+Encapsulation is the bundling related state and behavior into an object.
 ### Benefits of Encapsulation
 - Makes code more intuitive and easy to understand by keeping related data together
-- Creates **public interface** through which to access an object (note: JS doesn't provide access restrictions)
-NOTE: Public interface is not necessary due to the limitations of JavaScript.  Using methods to change properties rather than accessing them directly is recommended.
+- Creates a **public interface** through which to access an object
+Encapsulation Implementation:
+- JS doesn't offer access restrictions (i.e. private properties).
+- Using methods to change properties rather than accessing them directly is recommended.
 
 ## Collaborator Objects
-Collaborators
-: Objects which provide state within another object
+Collaborators are bjects which provide state within another object.
 ```javascript
 let cat = {
   name: 'Fluffy',
@@ -34,8 +33,6 @@ let pete = {
 
 pete.printCatName(); // => Fluffy
 ```
-### Choosing Collaborators
-When creating Classes and properties, be sure to think about what objects will collaborate and whether their collaboration makes sense
 
 ## Object Factories
 Object Factory
