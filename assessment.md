@@ -1,7 +1,7 @@
 # Assessment Study Guide
 
-## OOP
-Object-Oriented Programming: Organizing programs in terms of objects which have **state** and **behavior** (aka properties and methods) and interact with one another.
+## Object-Oriented Programming
+OOP: Organizing programs in terms of objects which have **state** and **behavior** (aka properties and methods) and interact with one another.
 
 ### Pros:
 - Higher level of abstraction
@@ -40,13 +40,13 @@ pete.printCatName(); // => Fluffy
 Object Factory: Function which returns a new object which a pre-defined structure (**type**).
 
 ### Pros:
-- Reduce repetitive code
+- Reduces repetitive code
 - Creates new objects with same structure which do not share memory
-- Can create self-referential methods using `this` keyword
+- Allows for self-referential methods using `this` keyword
 
 ### Cons:
 - Not memory efficient (all properties have full copies on each instance)
-- Not compatible with the `instanceof` operator to determine type.
+- Not compatible with the `instanceof` operator to determine type
 
 ```javascript
 function createCar(fuelLevel) {
@@ -70,7 +70,7 @@ jaguar.displayFuelLevel(); // => 0.4
 
 ## Objects
 ### Property Access:
-- **Member Access Notation**: "Dot Notation" - Must be a string with no spaces or dashes (i.e. `obj.prop`).
+- **Member Access Notation** (Dot Notation): Must be a string with no spaces or dashes (i.e. `obj.prop`).
 - **Computed Member Access Notation**: "Bracked Notation" - Will compute value and convert to string (i.e. `obj['prop']`).
 ### Determining Property Existence:
 - `in`: Returns true if property exists in the object's prototypal chain, whether or not enumerable
@@ -109,10 +109,7 @@ console.log(keys.hasOwnProperty("length")); // => true
 console.log(obj.hasOwnProperty("hasOwnProperty")); // => false
 ```
 
-## Assigning Properties
-Properties of an object can be copied directly onto another object using `Object.assign()`.
-
-## `Object.assign()`
+### `Object.assign()`
 Static Object method which copies the properties and methods of one Object to another.
 
 NOTE: Does not work with Classes/Functions. Must be an object instance.
@@ -158,11 +155,12 @@ console.log(source);  // => { src: [ 'Something Different' ] }
 console.log(target.__proto__ === source); // => false
 ```
 
-Considerations:
-- `target` is both mutated and returned
-- For any key on `target`, the lastest source will overwrite the value
-- Only copies *own properties* for both `target` and `source`
-- If value is a reference, only a copy of reference is provided (Use Stringify to get deep copy)
+Considerations with `Object.assign()`:
+- `target` is both mutated and returned.
+- For any key on `target`, the lastest source will overwrite the value.
+- Only copies *own properties* for both `target` and `source`.
+- If value is a reference, only a copy of reference is provided (Use Stringify to get deep copy).
+- Does not leverage prototyping for memory efficiency and typing.
 
 ## Prototypes
 
@@ -170,14 +168,25 @@ Prototype: An object from which another object inherits properties and methods. 
 
 ### `[[Prototype]]`
 
-All objects are created with a `[[Prototype]]` value which can point to another object or `null`.
+JavaScript uses a hidden `[[Prototype]]` value when looking for properties or methods on objects to determine where to continue looking if the property or method is not stored directly ont the object.
 
 ### Checking `[[Prototype]]` value
 
 - `Object.getPrototypeOf()`
 - `__proto__` (aka "Dunder Proto") 
 
-NOTE: Dunder Proto, `__proto__`, and `[[Prototype]]` all refer to the same property.
+NOTE: Dunder Proto, `__proto__`, and `[[Prototype]]` all refer to the same property, but `Object.getPrototypeOf()`` is the de facto correct choice.
+
+Example: Array Constructor
+
+```javascript
+let arr = [1, 2, 3];
+
+console.log(arr.hasOwnProperty("forEach"));  // => false
+console.log(Array.prototype.hasOwnProperty("forEach"));  // => true
+console.log(Object.getPrototypeOf(arr) === Array.prototype);  // => true
+console.log("forEach" in arr);  // => true
+```
 
 ### `Prototype` vs `[[Prototype]]`
 

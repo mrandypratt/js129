@@ -1,13 +1,6 @@
-function CreateObject(prop) {
-  this.prop = prop;
-  
-  this.method = function() {
-    console.log(`My property is ${this.prop}`);
-  };
-}
+let arr = [1, 2, 3];
 
-let regularObj = new CreateObject("Something regular");
-let crazyObj = new CreateObject("CRAZINESS");
-
-regularObj.method();
-crazyObj.method();
+console.log(arr.hasOwnProperty("forEach"));  // => false
+console.log(Array.prototype.hasOwnProperty("forEach"));  // => true
+console.log(Object.getPrototypeOf(arr) === Array.prototype);  // => true
+console.log("forEach" in arr);  // => true
