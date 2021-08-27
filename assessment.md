@@ -79,7 +79,7 @@ jaguar.displayFuelLevel(); // => 0.4
 | ---- | ---- | ---- | ---- | ---- |
 | `in` | Yes | Yes | Yes | Yes |
 | `hasOwnProperty()` | Yes | No | Yes | Yes |
-| `Object.getOwnPropertyNames()` | No | Yes | Yes | Yes |
+| `Object.getOwnPropertyNames()` | Yes | No | Yes | Yes |
 | `Object.keys()` | Yes | No | Yes | No |
 
 ```javascript
