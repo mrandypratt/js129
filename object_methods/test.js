@@ -1,31 +1,20 @@
-// Create Classes for the two overlapping methods
-class FlyingBird {
-  fly() { console.log("I can Fly!") }
+let obj = {
+  key1: "value1",
+  key2: "value2",
 }
+// Keys is good for iterating over enumerable properties
+let keys = Object.keys(obj) // =>  [ 'key1', 'key2' ]
+console.log(keys)
 
-class SwimmingBird {
-  swim() { console.log("I can Swim!") }
-}
+// getOwnPropertyNames will return non-enumerable properties too
+console.log(Object.getOwnPropertyNames(obj)); // =>  [ 'key1', 'key2' ]
+console.log(Object.getOwnPropertyNames(keys)); // =>  [ '0', '1', 'length' ]
 
-// Create class to extend on class and assign the other class(es) to the prototype chain
-class BothBird extends SwimmingBird {
-  this.fly = FlyingBird.fly;
-}
 
-class Parrot extends FlyingBird {}
+console.log("key1" in obj); // => true
+console.log("length" in keys); // => true
+console.log("hasOwnProperty" in obj); // => true
 
-class Penguin extends SwimmingBird {}
-
-class Duck extends BothBird {}
-
-let flyer = new Parrot();
-let swimmer = new Penguin();
-let bother = new Duck();
-
-flyer.fly()
-swimmer.swim()
-bother.swim()
-console.log(bother)
-console.log(Duck)
-console.log("swim" in bother)
-console.log("fly" in bother)
+console.log(obj.hasOwnProperty("key1")); // => true
+console.log(keys.hasOwnProperty("length")); // => true
+console.log(obj.hasOwnProperty("hasOwnProperty")); // => false
