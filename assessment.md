@@ -2,7 +2,7 @@
 
 ## OOP
 Object-Oriented Programming
-: Organizing programs in terms of objects which have *state* and *behavior* (aka properties and methods) and interact with one another.
+: Organizing programs in terms of objects which have **state** and **behavior** (aka properties and methods) and interact with one another.
 ### Pros:
 - Higher level of abstraction
 - Easier to create, comprehend, and update programs
@@ -11,16 +11,15 @@ Object-Oriented Programming
 - Generally larger programs
 - Less memory-efficient
 ## Encapsulation
-Encapsulation is the bundling related state and behavior into an object.
-### Benefits of Encapsulation
+The bundling related state and behavior into an object.
 - Makes code more intuitive and easy to understand by keeping related data together
 - Creates a **public interface** through which to access an object
-Encapsulation Implementation:
+Implementation:
 - JS doesn't offer access restrictions (i.e. private properties).
 - Using methods to change properties rather than accessing them directly is recommended.
 
 ## Collaborator Objects
-Collaborators are bjects which provide state within another object.
+Objects which provide state within another object.
 ```javascript
 let cat = {
   name: 'Fluffy',
@@ -41,6 +40,9 @@ Object Factory
 - Reduce repetitive code
 - Creates new objects with same structure which do not share memory
 - Can create self-referential methods using `this` keyword
+### Cons:
+- Not memory efficient (all properties have full copies on each instance)
+- Not compatible with the `instanceof` operator to determine type.
 
 ```javascript
 function createCar(fuelLevel) {
@@ -64,13 +66,21 @@ jaguar.displayFuelLevel(); // => 0.4
 
 ## Objects
 ### Property Access:
-- **Member Access Notation**: "Dot Notation" - Must be a string with no spaces or dashes
-- **Computed Member Access Notation**: "Bracked Notation" - Will compute value and convert to string
+- **Member Access Notation**: "Dot Notation" - Must be a string with no spaces or dashes (i.e. `obj.prop`).
+- **Computed Member Access Notation**: "Bracked Notation" - Will compute value and convert to string (i.e. `obj['prop']`).
 ### Determining Property Existence:
 - `in`: Returns true if property exists in the object's prototypal chain, whether or not enumerable
 - `hasOwnProperty`: Returns Boolean indicating if object owns property, whether or not enumerable
 - `Object.getOwnPropertyNames()`: Returns Array of all owned properties, including non-enumerable (length, name). Good for JS inner workings, not for iterating over values
 - `Object.keys()`: Returns array of only owned, enumerable properties
+
+### Property Cheatsheet
+| Operator/Method | Protoype Chain | Own Property | Enumerable | Non-Enumerable |
+| ---- | ---- | ---- | ---- | ---- |
+| `in` | Yes | Yes | Yes | Yes |
+| `hasOwnProperty()` | No | Yes | Yes | Yes |
+| `Object.getOwnPropertyNames()` | No | Yes | Yes | Yes |
+| `Object.keys()` | No | Yes | Yes | No |
 
 ```javascript
 let keys = Object.keys(myObject)       //  [ '7', 'false', '1,2,3', 'a-key' ]
