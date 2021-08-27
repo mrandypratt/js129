@@ -1,7 +1,7 @@
 // Determine this prototype chain
 console.log(this) // => {}
-console.log(this.__proto__) // => {}
-console.log(this.__proto__.__proto__)  // => null
+console.log(this.__proto__ === Object.prototype) // => true
+console.log(this.__proto__.__proto__ === null)  // => true
 
 // Prototype is Object.prototype
 console.log(this === Object.prototype) // => false

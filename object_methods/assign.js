@@ -46,3 +46,6 @@ source.src[0] = "Something Different";
 
 console.log(target);  // => { src: [ 'Something Different' ], trg: 'Target Property' }
 console.log(source);  // => { src: [ 'Something Different' ] }
+
+// Assign only copies the values/refrences to the object. Source is not a prototype.
+console.log(target.__proto__ === source); // => false
