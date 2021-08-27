@@ -106,21 +106,33 @@ console.log(obj.hasOwnProperty("hasOwnProperty")); // => false
 ```
 
 ## Prototypal Inheritance
-prototype
-: An object from which another obect inherits properties/methods
+### Prototype
+An object from which another object inherits properties and methods.
 
-All objects are created with a `[[Prototype]]` value, which can point to another object or `null`
-- All objects created in the global scope default to `Object.prototype` as their `[[Prototype]]` value
+All objects are created with a `[[Prototype]]` value which can point to another object or `null`.
+To see where the `[[Prototype]]` value of an object is pointing, you use `Object.getPrototypeOf()` can access its "Dunder Proto" `__proto__` property, which is a hidden property on all objects. Dunder Proto, `__proto__`, and `[[Prototype]]` all refer to the same property.
+There is also a `prototype` property on all Function objects. This is referring to something completely different. In prototypal inheritance, the Dunder Proto/`[[Prototype]]` property is pointed to the `prototype` property of a Function or Class in order to inherit shared properties.
+
+### `[[Prototypr]]` behavior:
+- All objects created in the global scope default to `Object.prototype` as their `[[Prototype]]` value.
 - `Object.prototype` has a `[[Prototype]]` value set to `null`
 - `[[Prototype]]` values can be set or altered using methods or changing property values
 - `Object.getPrototypeOf(obj)` or `obj.__proto__` can be used to determine `[[Prototype]]` value of a given `obj` 
 
-### Types of Prototypal Inheritance:
-- `Object.create()`: Creates new object with `[[Prototype]]` explicitly set to a particular object
-- `Object.setPrototypeOf()`: Reassigns `[[Prototype]]` property to a new object
+### Setting and Changing `[[Prototype]]` value:
+- `Object.create()`: Creates new object with `[[Prototype]]` explicitly set to a particular object.
+- `Object.setPrototypeOf()`: Reassigns `[[Prototype]]` property of an existing object to a new object. NOTE: Reassignment of `[[Prototype]]` is discouraged in practice.
+- Constructors with `new` keyword.
+- ES6 Class inheritance.
 
 ### Property Selection
-Unlike `Object.assign` which overwrites properties with same names, prototypal chaining allows each object to carry a unique value.
+When a property/method is accessed on an object, JavaScript follows the **Prototypal Chain** in order to find a matching property/method and will access/invoke the first match. The object being accessed is checked first, then the object pointed to by its `[[Prototype]]` value, and so un until a value is found or the chain ends.
+Once all prototypes are searched, the chain ends with `null`, which is the value of `Object.prototype.__proto__`
+Benefits:
+- Objects can have access to methods without having to fully copy them as an owned property.
+- Objects in protype chain can all have properties of the same name, each accessible from itself and any other inheriting objects which do have their own property of that name.
+
+### Example 2: Property in prototype chain with the same name.
 ```javascript
 // Two objects are chained together with different "prop" values
 
@@ -148,8 +160,6 @@ newInstance.prop = "Something Absolutely Different";
 console.log(proto);  // => { prop: 'Prototype Value' }
 console.log(instance);  // => { prop: 'First Instance Value' }
 console.log(newInstance);  // => { prop: 'Something Absolutely Different' }
-
-### 
 ```
 
 ## Functions
