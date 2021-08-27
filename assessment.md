@@ -75,12 +75,12 @@ jaguar.displayFuelLevel(); // => 0.4
 - `Object.keys()`: Returns array of only owned, enumerable properties
 
 ### Property Cheatsheet
-| Operator/Method | Protoype Chain | Own Property | Enumerable | Non-Enumerable |
+| Operator/Method | Own Property | Protoype Chain | Enumerable | Non-Enumerable |
 | ---- | ---- | ---- | ---- | ---- |
 | `in` | Yes | Yes | Yes | Yes |
-| `hasOwnProperty()` | No | Yes | Yes | Yes |
+| `hasOwnProperty()` | Yes | No | Yes | Yes |
 | `Object.getOwnPropertyNames()` | No | Yes | Yes | Yes |
-| `Object.keys()` | No | Yes | Yes | No |
+| `Object.keys()` | Yes | No | Yes | No |
 
 ```javascript
 let keys = Object.keys(myObject)       //  [ '7', 'false', '1,2,3', 'a-key' ]
