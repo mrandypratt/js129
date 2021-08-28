@@ -14,15 +14,15 @@ instance.inst = "Instance Property";
 
 // When logged, the object only log the properties added directly to that specific object
 
-instance  // => { inst: 'Instance Property' }
-prototype  // => { pro: 'Prototype Property' }
+console.log(instance);  // => { inst: 'Instance Property' }
+console.log(prototype);  // => { pro: 'Prototype Property' }
 
 // Accessing properties in instance extends to the properties of the prototype
 
-instance.pro  // => Prototype Property
-instance.inst  // => Instance Property
-prototype.pro  // => Prototype Property
-prototype.inst  // => undefined
+console.log(instance.pro);  // => Prototype Property
+console.log(instance.inst);  // => Instance Property
+console.log(prototype.pro);  // => Prototype Property
+console.log(prototype.inst);  // => undefined
 
 // hasOwnProperty() ignores the prototype chain
 // instance does not own the 'pro' property

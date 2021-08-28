@@ -45,3 +45,4 @@ reginald.animalMethod(); // => I'm Scott and I'm an animal!
 console.log(Animal.prototype.__proto__ === Object.prototype); // => true
 console.log(Object.prototype.__proto__); // ==> null
 Animal.info(); // => [Function: Animal]
+console.log(Object.getPrototypeOf(Object.getPrototypeOf(Object.getPrototypeOf(reginald))));

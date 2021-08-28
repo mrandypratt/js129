@@ -1,10 +1,10 @@
 function test() {
   
   // Determine this prototype chain
-  // console.log(this) // => [Object [global]]
-  console.log(this.__proto__) // => {}
-  console.log(this.__proto__.__proto__)  // => {}
-  console.log(this.__proto__.__proto__.__proto__)  // => null
+  console.log(this === global) // => [Object [global]]
+  console.log(this.__proto__ === Function.prototype) // => {}
+  console.log(this.__proto__.__proto__ === Object.prototype)  // => {}
+  console.log(this.__proto__.__proto__.__proto__ === null)  // => null
   
   // Prototype is Object.prototype
   console.log(this === Object.prototype) // => false
@@ -26,8 +26,8 @@ function test() {
   console.log(this.__proto__ === global.Function)  // => false
   console.log(this.__proto__.__proto__ === global.Function) // => false
   
-  console.log(this.constructor)  // => [Function: Object]
-  console.log(this.constructor === global.Object) // => true
+  console.log(this.constructor === Object)  // => [Function: Object]
+  console.log(this.constructor === Object) // => true
 }
 
 test()
